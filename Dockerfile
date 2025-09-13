@@ -34,6 +34,7 @@ COPY --from=builder /app/dist ./dist
 
 # Puerto para DigitalOcean
 ENV PORT=8080
+ENV NODE_ENV=production
 EXPOSE 8080
 
 # Comando de inicio
