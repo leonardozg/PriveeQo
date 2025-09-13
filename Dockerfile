@@ -37,5 +37,5 @@ ENV PORT=8080
 ENV NODE_ENV=production
 EXPOSE 8080
 
-# Comando de inicio con puerto forzado
-CMD ["sh", "-c", "PORT=8080 npx tsx server/index.ts"]
+# Comando de inicio - servidor compilado
+CMD ["node", "dist/index.js"]

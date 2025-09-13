@@ -1,24 +1,22 @@
 #!/usr/bin/env node
 
-// Build script ULTRA-SIMPLE para DigitalOcean
-// Solo frontend - backend se ejecuta con tsx
+// Build script FINAL para DigitalOcean
+// Frontend + Backend compilado - sin dependencias dev en runtime
 
 import { execSync } from 'node:child_process';
-import { copyFileSync, mkdirSync } from 'fs';
 
-console.log('🔨 Build ultra-simple para DigitalOcean...');
+console.log('🔨 Build completo para DigitalOcean...');
 
 try {
-  // Solo build frontend
+  // Step 1: Build frontend
   console.log('📦 Building frontend...');
   execSync('npx vite build', { stdio: 'inherit' });
   
-  // Copiar package.json para node_modules en runtime
-  console.log('📋 Copying package files...');
-  mkdirSync('dist', { recursive: true });
-  copyFileSync('package.json', 'dist/package.json');
+  // Step 2: Build backend SIMPLIFICADO  
+  console.log('🚀 Building backend...');
+  execSync('npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --external:@neondatabase/serverless --external:drizzle-kit --external:sharp --external:lightningcss --external:@babel/* --external:postcss --external:autoprefixer', { stdio: 'inherit' });
   
-  console.log('✅ Build completado - server ejecutará con tsx');
+  console.log('✅ Build completo - servidor compilado para node');
 } catch (error) {
   console.error('❌ Error en build:', error.message);
   process.exit(1);
