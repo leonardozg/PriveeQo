@@ -1,0 +1,426 @@
+/* Using system Arial font for better readability */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Clean Gray Theme - Professional and Readable */
+  --background: hsl(0, 0%, 98%);
+  --foreground: hsl(0, 0%, 15%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(0, 0%, 15%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 15%);
+  
+  /* Primary: Professional Gray */
+  --primary: hsl(0, 0%, 20%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --primary-50: hsl(0, 0%, 97%);
+  --primary-500: hsl(0, 0%, 20%);
+  --primary-600: hsl(0, 0%, 15%);
+  --primary-700: hsl(0, 0%, 12%);
+  --primary-800: hsl(0, 0%, 10%);
+  --primary-900: hsl(0, 0%, 8%);
+  
+  /* Secondary: Light Gray */
+  --secondary: hsl(0, 0%, 95%);
+  --secondary-foreground: hsl(0, 0%, 15%);
+  --muted: hsl(0, 0%, 94%);
+  --muted-foreground: hsl(0, 0%, 50%);
+  --accent: hsl(0, 0%, 85%);
+  --accent-foreground: hsl(0, 0%, 15%);
+  --destructive: hsl(0, 70%, 50%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 88%);
+  --input: hsl(0, 0%, 88%);
+  --ring: hsl(0, 0%, 20%);
+  
+  /* PRIVEE Gray Colors */
+  --privee-primary: hsl(0, 0%, 20%);
+  --privee-secondary: hsl(0, 0%, 40%);
+  --privee-light: hsl(0, 0%, 95%);
+  --privee-medium: hsl(0, 0%, 75%);
+  --privee-dark: hsl(0, 0%, 15%);
+  
+  --emerald-50: hsl(151, 81%, 96%);
+  --emerald-100: hsl(149, 80%, 90%);
+  --emerald-600: hsl(158, 64%, 52%);
+  --emerald-700: hsl(158, 64%, 47%);
+  --purple-50: hsl(270, 100%, 98%);
+  --purple-100: hsl(269, 100%, 95%);
+  --purple-600: hsl(271, 81%, 56%);
+  --purple-700: hsl(272, 72%, 47%);
+  --amber-100: hsl(48, 100%, 88%);
+  --amber-600: hsl(32, 95%, 44%);
+  --blue-100: hsl(214, 95%, 93%);
+  --blue-600: hsl(217, 91%, 60%);
+  --green-100: hsl(140, 40%, 85%);
+  --green-800: hsl(145, 63%, 32%);
+  --font-arial: Arial, sans-serif;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: hsl(0, 0%, 8%);
+  --foreground: hsl(0, 0%, 95%);
+  --card: hsl(0, 0%, 12%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --popover: hsl(0, 0%, 8%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --primary: hsl(0, 0%, 85%);
+  --primary-foreground: hsl(0, 0%, 8%);
+  --secondary: hsl(0, 0%, 15%);
+  --secondary-foreground: hsl(0, 0%, 95%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 65%);
+  --accent: hsl(0, 0%, 20%);
+  --accent-foreground: hsl(0, 0%, 95%);
+  --destructive: hsl(0, 62%, 40%);
+  --destructive-foreground: hsl(0, 0%, 95%);
+  --border: hsl(0, 0%, 20%);
+  --input: hsl(0, 0%, 15%);
+  --ring: hsl(0, 0%, 85%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-arial);
+  }
+}
+
+@layer utilities {
+  .font-arial {
+    font-family: var(--font-arial);
+  }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceSubtle {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-4px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes loadingDots {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--privee-medium);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--privee-primary);
+}
+
+/* Custom PRIVEE Styles - Gray Theme */
+@layer components {
+  .privee-gradient {
+    background: linear-gradient(135deg, var(--privee-primary) 0%, var(--privee-dark) 100%);
+  }
+  
+  .privee-text-gradient {
+    color: var(--privee-primary);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  
+  .privee-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px -4px hsl(0 0% 0% / 0.1);
+  }
+  
+  .privee-button-primary {
+    background: var(--privee-primary);
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  /* Micro-interactions and animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  .animate-bounce-subtle {
+    animation: bounceSubtle 0.6s ease-out;
+  }
+
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px hsl(0 0% 0% / 0.15);
+  }
+
+  .button-press {
+    transition: transform 0.1s ease;
+  }
+
+  .button-press:active {
+    transform: scale(0.98);
+  }
+
+  .card-hover {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px hsl(0 0% 0% / 0.15);
+    border-color: var(--privee-primary);
+  }
+
+  .input-focus {
+    transition: all 0.2s ease;
+  }
+
+  .input-focus:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 3px hsl(0 0% 20% / 0.1);
+  }
+
+  .badge-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .loading-dots {
+    animation: loadingDots 1.4s ease-in-out infinite;
+  }
+
+  /* Mobile-first responsive utilities */
+  .mobile-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-text {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .mobile-flex {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  .mobile-hidden {
+    @apply hidden sm:block;
+  }
+
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+
+  /* Enhanced component styles */
+  .enhanced-card {
+    @apply privee-card hover-lift rounded-xl border-2 border-transparent;
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  }
+
+  .enhanced-button {
+    @apply button-press relative overflow-hidden;
+    background: linear-gradient(135deg, var(--privee-primary) 0%, var(--privee-dark) 100%);
+  }
+
+  .enhanced-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .enhanced-button:hover::before {
+    left: 100%;
+  }
+
+  .enhanced-input {
+    @apply input-focus transition-all duration-200;
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  }
+
+  /* Responsive breakpoint indicators (development only) */
+  .breakpoint-indicator {
+    @apply fixed top-4 right-4 z-50 px-2 py-1 text-xs font-mono bg-black text-white rounded opacity-50;
+  }
+  
+  .breakpoint-indicator::after {
+    content: 'XS';
+  }
+  
+  @media (min-width: 640px) {
+    .breakpoint-indicator::after {
+      content: 'SM';
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .breakpoint-indicator::after {
+      content: 'MD';
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .breakpoint-indicator::after {
+      content: 'LG';
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .breakpoint-indicator::after {
+      content: 'XL';
+    }
+  }
+  
+  .privee-button-primary:hover {
+    background: var(--privee-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px -4px hsl(0 0% 0% / 0.2);
+  }
+
+  .privee-logo-text {
+    color: var(--privee-primary);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .privee-logo-highlight {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+  
+  .privee-logo-highlight:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.25);
+  }
+
+  .privee-logo-hero {
+    background: white;
+    border-radius: 3rem;
+    padding: 2rem;
+    box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+    backdrop-filter: blur(20px);
+    border: 3px solid rgba(0, 0, 0, 0.08);
+  }
+  
+  .privee-logo-hero:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Custom PRIVEE component styles for enhanced UX */
+@layer components {
+  .privee-container {
+    @apply mobile-padding max-w-7xl mx-auto;
+  }
+  
+  .privee-section {
+    @apply py-8 sm:py-12 lg:py-16;
+  }
+  
+  .privee-heading {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold privee-text-gradient;
+  }
+  
+  .privee-subheading {
+    @apply text-lg sm:text-xl text-gray-600 mb-6;
+  }
+}

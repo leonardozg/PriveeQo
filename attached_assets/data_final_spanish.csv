@@ -1,0 +1,112 @@
+name,description,category,quality,ambientacion,basePrice,minMargin,maxMargin,status
+Desayuno Club Plata Menú,"Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Papel, Personal y equipo de cocina,  Servicio de meseros (1 cada 10 personas, por 5 horas efectivas)",Menú,Plata,Club,760.8695652,0.15,0.25,active
+Desayuno Club Plata Mobiliario,"Mesa redonda con mantelera fina,Sillas plegables,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Plata,Club,326.0869565,0.15,0.25,active
+Desayuno Ceremonia Plata Menú,"Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Papel, Personal y equipo de cocina,  Servicio de meseros (1 cada 10 personas, por 5 horas efectivas)",Menú,Plata,Ceremonia,762,0.15,0.25,active
+Desayuno Ceremonia Plata Mobiliario,"Mesa redonda con mantelera fina,Sillas plegables,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Plata,Ceremonia,342.3478261,0.15,0.25,active
+Desayuno Gala Plata Menú,"Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Papel, Personal y equipo de cocina,  Servicio de meseros (1 cada 10 personas, por 5 horas efectivas)",Menú,Plata,Gala,375.9130435,0.15,0.25,active
+Desayuno Gala Plata Mobiliario,"Mesa redonda con mantelera fina,Sillas plegables,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Plata,Gala,763.2173913,0.15,0.25,active
+Desayuno Club Oro Menú,"Cecina de Res con Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Lino, Personal y equipo de cocina,  Servicio de meseros (2 cada 10 personas, por 5 horas efectivas)",Menú,Oro,Club,763.9130435,0.15,0.3,active
+Desayuno Club Oro Decoracion,Men personalizado (2 por mesa),Decoracion,Oro,Club,10.91304348,0.15,0.3,active
+Desayuno Club Oro Mobiliario,"Mesa redonda con mantelera fina, Sillas Tiffany,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Oro,Club,316.4782609,0.15,0.3,active
+Desayuno Ceremonia Oro Menú,"Cecina de Res con Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Lino, Personal y equipo de cocina,  Servicio de meseros (2 cada 10 personas, por 5 horas efectivas)",Menú,Oro,Ceremonia,776.0869565,0.15,0.3,active
+Desayuno Ceremonia Oro Decoracion,Men personalizado (2 por mesa),Decoracion,Oro,Ceremonia,11.08695652,0.15,0.3,active
+Desayuno Ceremonia Oro Mobiliario,"Mesa redonda con mantelera fina, Sillas Tiffany,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Oro,Ceremonia,321.5217391,0.15,0.3,active
+Desayuno Gala Oro Menú,"Cecina de Res con Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Lino, Personal y equipo de cocina,  Servicio de meseros (2 cada 10 personas, por 5 horas efectivas)",Menú,Oro,Gala,785.2173913,0.15,0.3,active
+Desayuno Gala Oro Decoracion,Men personalizado (2 por mesa),Decoracion,Oro,Gala,11.2173913,0.15,0.3,active
+Desayuno Gala Oro Mobiliario,"Mesa redonda con mantelera fina, Sillas Tiffany,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Oro,Gala,325.3043478,0.15,0.3,active
+Desayuno Club Platino Menú,"Bistec de Res con Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Lino, Personal y equipo de cocina,  Servicio de meseros (1 cada 10 personas, por 5 horas efectivas), Capitán de Meseros",Menú,Platino,Club,765.1304348,0.15,0.35,active
+Desayuno Club Platino Decoracion,Men personalizado (por invitado),Decoracion,Platino,Club,10.93043478,0.15,0.35,active
+Desayuno Club Platino Mobiliario,"Mesa redonda con mantelera fina, Sillas Tiffany,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Platino,Club,316.9826087,0.15,0.35,active
+Desayuno Ceremonia Platino Menú,"Bistec de Res con Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Lino, Personal y equipo de cocina,  Servicio de meseros (1 cada 10 personas, por 5 horas efectivas), Capitán de Meseros",Menú,Platino,Ceremonia,777.3043478,0.15,0.35,active
+Desayuno Ceremonia Platino Decoracion,Men personalizado (por invitado),Decoracion,Platino,Ceremonia,11.10434783,0.15,0.35,active
+Desayuno Ceremonia Platino Mobiliario,"Mesa redonda con mantelera fina, Sillas Tiffany,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Platino,Ceremonia,322.026087,0.15,0.35,active
+Desayuno Gala Platino Menú,"Bistec de Res con Enchiladas o chilaquiles verdes o rojos acompaados de frijoles refritos, Fruta de temporada con queso cottage, miel y granola artesanal, Caf americano (normal y descafeinado), Chocolate (leche deslactosada), T verde, manzana canela y manzanilla, Pan mini dulce y salado, Servilletas de Lino, Personal y equipo de cocina,  Servicio de meseros (1 cada 10 personas, por 5 horas efectivas), Capitán de Meseros",Menú,Platino,Gala,785.826087,0.15,0.35,active
+Desayuno Gala Platino Decoracion,Men personalizado (por invitado),Decoracion,Platino,Gala,11.22608696,0.15,0.35,active
+Desayuno Gala Platino Mobiliario,"Mesa redonda con mantelera fina, Sillas Tiffany,  Vajilla, cubiertos y cristalera (Acorde al menú), Plato base de diseo, ",Mobiliario,Platino,Gala,325.5565217,0.15,0.35,active
+Comida o Cena Club Plata Menú,"Men 3 tiempos base de pollo o cerdo (A elegir) emplatado de 3 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 6 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas),",Menú,Plata,Club,966.9565217,0.15,0.25,active
+Comida o Cena Club Plata Mobiliario,"Mesas Club, con mantelera fina, Silla Plegable, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Plata,Club,205.4782609,0.15,0.25,active
+Comida o Cena Club Plata Decoracin,"Servilletas de papel, Centros de mesa bajos para mesa redonda con flor de temporada y follajes finos",Decoracin,Plata,Club,36.26086957,0.15,0.25,active
+Comida o Cena Ceremonia Plata Menú,"Men 3 tiempos base de pollo o cerdo (A elegir) emplatado de 3 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 6 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas),",Menú,Plata,Ceremonia,949.5652174,0.15,0.25,active
+Comida o Cena Ceremonia Plata Mobiliario,"Mesas Club, con mantelera fina, Silla Plegable, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Plata,Ceremonia,231.3043478,0.15,0.25,active
+Comida o Cena Ceremonia Plata Decoracin,"Servilletas de papel, Centros de mesa bajos para mesa redonda con flor de temporada y follajes finos",Decoracin,Plata,Ceremonia,36.52173913,0.15,0.25,active
+Comida o Cena Gala Plata Menú,"Men 3 tiempos base de pollo o cerdo (A elegir) emplatado de 3 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 6 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas),",Menú,Plata,Gala,914.3478261,0.15,0.25,active
+Comida o Cena Gala Plata Mobiliario,"Mesas Club, con mantelera fina, Silla Plegable, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Plata,Gala,268.2086957,0.15,0.25,active
+Comida o Cena Gala Plata Decoracin,"Servilletas de papel, Centros de mesa bajos para mesa redonda con flor de temporada y follajes finos",Decoracin,Plata,Gala,36.57391304,0.15,0.25,active
+Comida o Cena Ceremonia Oro Menú,"Men 3 tiempos base de Pollo Cerdo o Res (a elegir) emplatado de 3 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 7 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Servicio de Caféé y T, Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas), Capitán de Meseros",Menú,Oro,Ceremonia,972.0434783,0.15,0.3,active
+Comida o Cena Ceremonia Oro Mobiliario,"Mesa redonda con mantelera fina (6) + Mesa de madera Rustica (4),  Sillas Crossback o Versalles + Tiffany con funda, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Oro,Ceremonia,221.4782609,0.15,0.3,active
+Comida o Cena Ceremonia Oro Decoracin,"Servilletas de Lino, Nmeros de mesa (uno por mesa), Men personalizado (dos por mesa), Centros de mesa bajos para mesa redonda + caminos para mesa rectangular con flor de temporada y follajes finos",Decoracin,Oro,Ceremonia,36.91304348,0.15,0.3,active
+Comida o Cena Gala Oro Menú,"Men 3 tiempos base de Pollo Cerdo o Res (a elegir) emplatado de 3 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 7 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Servicio de Caféé y T, Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas), Capitán de Meseros",Menú,Oro,Gala,973.4173913,0.15,0.3,active
+Comida o Cena Gala Oro Mobiliario,"Mesa redonda con mantelera fina (6) + Mesa de madera Rustica (4),  Sillas Crossback o Versalles + Tiffany con funda, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Oro,Gala,221.7913043,0.15,0.3,active
+Comida o Cena Gala Oro Decoracin,"Servilletas de Lino, Nmeros de mesa (uno por mesa), Men personalizado (dos por mesa), Centros de mesa bajos para mesa redonda + caminos para mesa rectangular con flor de temporada y follajes finos",Decoracin,Oro,Gala,36.96521739,0.15,0.3,active
+Comida o Cena Ceremonia Platino Menú,"Men 3 tiempos base de Pollo, Cerdo, Res o Salmon (a elegir) emplatado de 4 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 7 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Tornafiesta para el 80% de los invitados (chilaquiles verdes o rojos), Servicio de Caféé y T, Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas), Capitán de Meseros",Menú,Platino,Ceremonia,991.3043478,0.15,0.35,active
+Comida o Cena Ceremonia Platino Mobiliario,"Mesa redonda con mantelera fina (6) + Mesa de viga personalizada (4) Silla Prada o Metric, Crossback,  Versalles o Tiffany con funda, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Platino,Ceremonia,161.0869565,0.15,0.35,active
+Comida o Cena Ceremonia Platino Decoracin,"Servilletas de Lino, Nmeros de mesa (uno por mesa), Men personalizado (uno por comensal ), Centros de mesa bajos para mesa redonda + caminos para mesa rectangular con flor de temporada y follajes finos",Decoracin,Platino,Ceremonia,86.73913043,0.15,0.35,active
+Comida o Cena Gala Platino Menú,"Men 3 tiempos base de Pollo, Cerdo, Res o Salmon (a elegir) emplatado de 4 tiempos incluye Pan, Barra de refrescos y hielos ilimitados por 7 horas (agua, agua mineral, coca cola, coca light, refresco de toronja, refresco de sabor,limones), Tornafiesta para el 80% de los invitados (chilaquiles verdes o rojos), Servicio de Caféé y T, Personal y equipo de cocina, Servicio de meseros (1 cada 10 personas por 6 horas efectivas), Capitán de Meseros",Menú,Platino,Gala,992.6956522,0.15,0.35,active
+Comida o Cena Gala Platino Mobiliario,"Mesa redonda con mantelera fina (6) + Mesa de viga personalizada (4) Silla Prada o Metric, Crossback,  Versalles o Tiffany con funda, Vajilla y plaqué, Cristalera (vaso highball, copa tinto, old fashion y caballitos), Plato base de diseo",Mobiliario,Platino,Gala,161.3130435,0.15,0.35,active
+Comida o Cena Gala Platino Decoracin,"Servilletas de Lino, Nmeros de mesa (uno por mesa), Men personalizado (uno por comensal ), Centros de mesa bajos para mesa redonda + caminos para mesa rectangular con flor de temporada y follajes finos",Decoracin,Platino,Gala,86.86086957,0.15,0.35,active
+Cocteleria Club Plata Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Plata,Club,140,0.15,0.35,active
+Canapes Club Plata Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Plata,Club,140,0.15,0.35,active
+Cocteleria Ceremonia Plata Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Plata,Ceremonia,160,0.15,0.35,active
+Canapes Ceremonia Plata Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Plata,Ceremonia,160,0.15,0.35,active
+Cocteleria Gala Plata Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Plata,Gala,180,0.15,0.35,active
+Canapes Gala Plata Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Plata,Gala,180,0.15,0.35,active
+Cocteleria Club Oro Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Oro,Club,154,0.15,0.35,active
+Canapes Club Oro Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Oro,Club,154,0.15,0.35,active
+Cocteleria Ceremonia Oro Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Oro,Ceremonia,176,0.15,0.35,active
+Canapes Ceremonia Oro Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Oro,Ceremonia,176,0.15,0.35,active
+Cocteleria Gala Oro Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Oro,Gala,198,0.15,0.35,active
+Canapes Gala Oro Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Oro,Gala,198,0.15,0.35,active
+Cocteleria Club Platino Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Platino,Club,169.4,0.15,0.35,active
+Canapes Club Platino Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Platino,Club,169.4,0.15,0.35,active
+Cocteleria Ceremonia Platino Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Platino,Ceremonia,193.6,0.15,0.35,active
+Canapes Ceremonia Platino Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Platino,Ceremonia,193.6,0.15,0.35,active
+Cocteleria Gala Platino Menú,Una hora de Servicio Cristalera apropiada y 3 variedades a elegir 3 variedades a elegir,Menú,Platino,Gala,217.8,0.15,0.35,active
+Canapes Gala Platino Menú,Una hora de Servicio de bocadillos (5 Variedades a Elegir),Menú,Platino,Gala,217.8,0.15,0.35,active
+Audio y Video Club Plata DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina
+6 modulos LED",Audio y Video,Plata,Club,15364,0.15,0.2,active
+Audio y Video Club Plata Pista,Pista Iluminada Galaxy 4x4 m,Audio y Video,Plata,Club,5418,0.15,0.2,active
+Audio y Video Ceremonia Plata DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina
+6 modulos LED",Audio y Video,Plata,Ceremonia,15364,0.15,0.2,active
+Audio y Video Ceremonia Plata Pista,Pista Iluminada Galaxy 4x4 m,Audio y Video,Plata,Ceremonia,5418,0.15,0.2,active
+Audio y Video Gala Plata DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina
+6 modulos LED",Audio y Video,Plata,Gala,15364,0.15,0.2,active
+Audio y Video Gala Plata Pista 4x4,Pista Iluminada Galaxy 4x4 m,Audio y Video,Plata,Gala,5418,0.15,0.2,active
+Audio y Video Club Oro DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina, 6 modulos LED",Audio y Video,Oro,Club,15364,0.15,0.2,active
+Audio y Video Club Oro Pista 5X5,Pista Iluminada Galaxy 5x5 m,Audio y Video,Oro,Club,8455,0.15,0.2,active
+Audio y Video Club Oro Pista 4X4 pers,Pista personalizada impresa 4x4 m,Audio y Video,Oro,Club,8727,0.15,0.2,active
+Audio y Video Ceremonia Oro DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina, 6 modulos LED",Audio y Video,Oro,Ceremonia,15364,0.15,0.2,active
+Audio y Video Ceremonia Oro Pista 5x5,Pista Iluminada Galaxy 5x5 m,Audio y Video,Oro,Ceremonia,8455,0.15,0.2,active
+Audio y Video Ceremonia Oro Pista 4x4 Pers,Pista personalizada impresa 4x4 m,Audio y Video,Oro,Ceremonia,8727,0.15,0.2,active
+Audio y Video Gala Oro DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina, 6 modulos LED",Audio y Video,Oro,Gala,15364,0.15,0.2,active
+Audio y Video Gala Oro Pista 5x5,Pista Iluminada Galaxy 5x5 m,Audio y Video,Oro,Gala,8455,0.15,0.2,active
+Audio y Video Gala Oro pista 4x4 Pers,Pista personalizada impresa 4x4 m,Audio y Video,Oro,Gala,8727,0.15,0.2,active
+Audio y Video Club Platino DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina
+6 modulos LED",Audio y Video,Platino,Club,15364,0.15,0.2,active
+Audio y Video Club Platino Pista 5x5,Pista Iluminada Galaxy 5x5 m,Audio y Video,Platino,Club,8727,0.15,0.2,active
+Audio y Video Club Platino Pista 5x5 pers,Pista personalizada impresa 5x5 m,Audio y Video,Platino,Club,12091,0.15,0.2,active
+Audio y Video Ceremonia Platino DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina
+6 modulos LED",Audio y Video,Platino,Ceremonia,15364,0.15,0.2,active
+Audio y Video Ceremonia Platino Pista 5x5,Pista Iluminada Galaxy 5x5 m,Audio y Video,Platino,Ceremonia,8727,0.15,0.2,active
+Audio y Video Ceremonia Platino Pista 5x5 Pers,Pista personalizada impresa 5x5 m,Audio y Video,Platino,Ceremonia,12091,0.15,0.2,active
+Audio y Video Gala Platino DJ,"Sonorizacin con sistemas de audio Profesional  hasta 130 personas Incluye:
+Servicio de DJ por 6 horas Audio profesional HK Mixer audio 12 canales Micrfono SHURE
+Cabina
+6 modulos LED",Audio y Video,Platino,Gala,15364,0.15,0.2,active
+Audio y Video Gala Platino Pista 5x5,Pista Iluminada Galaxy 5x5 m,Audio y Video,Platino,Gala,8727,0.15,0.2,active
+Audio y Video Gala Platino Pista 5x5 Pers,Pista personalizada impresa 5x5 m,Audio y Video,Platino,Gala,12091,0.15,0.2,active

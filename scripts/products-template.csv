@@ -1,0 +1,4 @@
+name,description,category,quality,ambientacion,basePrice,minMargin,maxMargin,status
+Sillas Chiavari Doradas,Elegantes sillas chiavari en acabado dorado perfectas para eventos de lujo,Mobiliario,Oro,Gala,25.00,20,50,active
+Mesas Redondas Premium,Mesas redondas de 1.80m con mantelería de lujo incluida,Mobiliario,Platino,Gala,150.00,25,45,active
+Lounge VIP,Set completo de mobiliario lounge: sofás mesas de centro y decoración,Mobiliario,Platino,Club,800.00,30,60,active

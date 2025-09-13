@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Cookies - PRIVEE</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .cookie-test { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Diagnóstico de Cookies y Sesiones - PRIVEE</h1>
+    
+    <div class="section info">
+        <h3>🔍 Información del Navegador</h3>
+        <div id="browser-info"></div>
+    </div>
+
+    <div class="section">
+        <h3>🍪 Estado de Cookies</h3>
+        <button onclick="testCookies()">Probar Cookies</button>
+        <button onclick="clearCookies()">Limpiar Todas las Cookies</button>
+        <div id="cookie-status"></div>
+    </div>
+
+    <div class="section">
+        <h3>🔐 Test de Sesión con API</h3>
+        <button onclick="testSession()">Probar Sesión API</button>
+        <div id="session-status"></div>
+    </div>
+
+    <div class="section">
+        <h3>🌐 Test de Login</h3>
+        <div class="cookie-test">
+            <h4>Admin Login</h4>
+            <input type="text" id="admin-user" placeholder="Usuario" value="admin">
+            <input type="password" id="admin-pass" placeholder="Contraseña" value="Admin2025!">
+            <button onclick="testAdminLogin()">Login Admin</button>
+        </div>
+        <div class="cookie-test">
+            <h4>Partner Login</h4>
+            <input type="text" id="partner-user" placeholder="Usuario" value="Alonso1">
+            <input type="password" id="partner-pass" placeholder="Contraseña" value="socio123">
+            <button onclick="testPartnerLogin()">Login Partner</button>
+        </div>
+        <div id="login-status"></div>
+    </div>
+
+    <script>
+        // Información del navegador
+        function showBrowserInfo() {
+            const info = {
+                'User Agent': navigator.userAgent,
+                'Cookies Enabled': navigator.cookieEnabled,
+                'Domain': window.location.hostname,
+                'Protocol': window.location.protocol,
+                'Port': window.location.port || (window.location.protocol === 'https:' ? '443' : '80'),
+                'Local Storage': typeof(Storage) !== "undefined",
+                'Session Storage': typeof(sessionStorage) !== "undefined"
+            };
+            
+            let html = '<pre>';
+            for (let [key, value] of Object.entries(info)) {
+                html += `${key}: ${value}\n`;
+            }
+            html += '</pre>';
+            document.getElementById('browser-info').innerHTML = html;
+        }
+
+        // Test de cookies básico
+        function testCookies() {
+            const testName = 'privee-test-cookie';
+            const testValue = 'test-value-' + Date.now();
+            
+            // Intentar crear cookie
+            document.cookie = `${testName}=${testValue}; path=/; max-age=3600`;
+            
+            // Verificar si se creó
+            const cookies = document.cookie;
+            const cookieExists = cookies.includes(testName);
+            
+            let html = `<div class="${cookieExists ? 'success' : 'error'}">`;
+            html += `<strong>Test de Cookie:</strong> ${cookieExists ? 'ÉXITO' : 'FALLÓ'}<br>`;
+            html += `<strong>Todas las cookies:</strong><br><pre>${cookies || 'No hay cookies'}</pre>`;
+            html += '</div>';
+            
+            document.getElementById('cookie-status').innerHTML = html;
+        }
+
+        // Limpiar cookies
+        function clearCookies() {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+            }
+            alert('Cookies limpiadas. Recarga la página.');
+        }
+
+        // Test de sesión API
+        async function testSession() {
+            try {
+                const response = await fetch('/api/admin/me', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                let html = `<div class="${response.ok ? 'success' : 'error'}">`;
+                html += `<strong>Status:</strong> ${response.status}<br>`;
+                html += `<strong>Response:</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                html += '</div>';
+                
+                document.getElementById('session-status').innerHTML = html;
+            } catch (error) {
+                document.getElementById('session-status').innerHTML = 
+                    `<div class="error"><strong>Error:</strong> ${error.message}</div>`;
+            }
+        }
+
+        // Test de login admin
+        async function testAdminLogin() {
+            const username = document.getElementById('admin-user').value;
+            const password = document.getElementById('admin-pass').value;
+            
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                let html = `<div class="${response.ok ? 'success' : 'error'}">`;
+                html += `<strong>Admin Login - Status:</strong> ${response.status}<br>`;
+                html += `<strong>Response:</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                if (response.ok) {
+                    html += `<br><strong>Cookies después del login:</strong><br><pre>${document.cookie}</pre>`;
+                }
+                
+                html += '</div>';
+                
+                document.getElementById('login-status').innerHTML = html;
+            } catch (error) {
+                document.getElementById('login-status').innerHTML = 
+                    `<div class="error"><strong>Admin Login Error:</strong> ${error.message}</div>`;
+            }
+        }
+
+        // Test de login partner
+        async function testPartnerLogin() {
+            const username = document.getElementById('partner-user').value;
+            const password = document.getElementById('partner-pass').value;
+            
+            try {
+                const response = await fetch('/api/partner/login', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                let html = `<div class="${response.ok ? 'success' : 'error'}">`;
+                html += `<strong>Partner Login - Status:</strong> ${response.status}<br>`;
+                html += `<strong>Response:</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+                if (response.ok) {
+                    html += `<br><strong>Cookies después del login:</strong><br><pre>${document.cookie}</pre>`;
+                }
+                
+                html += '</div>';
+                
+                document.getElementById('login-status').innerHTML = html;
+            } catch (error) {
+                document.getElementById('login-status').innerHTML = 
+                    `<div class="error"><strong>Partner Login Error:</strong> ${error.message}</div>`;
+            }
+        }
+
+        // Inicializar al cargar
+        window.onload = function() {
+            showBrowserInfo();
+            testCookies();
+        };
+    </script>
+</body>
+</html>

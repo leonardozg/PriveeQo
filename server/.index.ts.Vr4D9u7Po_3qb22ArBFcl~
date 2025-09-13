@@ -1,0 +1,227 @@
+import express, { type Request, Response, NextFunction } from "express";
+import { registerRoutes } from "./routes";
+import { setupVite, serveStatic, log } from "./vite";
+
+const app = express();
+
+// Configure UTF-8 encoding for all responses
+app.use((req, res, next) => {
+  // Only set JSON content-type for API routes
+  if (req.path.startsWith('/api')) {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  }
+  next();
+});
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: false, limit: '50mb' }));
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  const path = req.path;
+  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+
+  const originalResJson = res.json;
+  res.json = function (bodyJson, ...args) {
+    capturedJsonResponse = bodyJson;
+    return originalResJson.apply(res, [bodyJson, ...args]);
+  };
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    if (path.startsWith("/api")) {
+      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) {
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      }
+
+      if (logLine.length > 80) {
+        logLine = logLine.slice(0, 79) + "…";
+      }
+
+      log(logLine);
+    }
+  });
+
+  next();
+});
+
+(async () => {
+  const server = await registerRoutes(app);
+  
+  // Initialize database with environment checking
+  try {
+    const { checkProductionEnvironment } = await import("./env-check");
+    const envStatus = checkProductionEnvironment();
+    
+    if (!envStatus.hasRequiredEnvs) {
+      log(`❌ Faltan variables de entorno críticas: ${envStatus.missingEnvs.join(', ')}`);
+      if (envStatus.isProduction) {
+        throw new Error(`Variables de entorno faltantes en producción: ${envStatus.missingEnvs.join(', ')}`);
+      }
+    }
+    
+    // Wait a moment for database connection to be ready
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    if (envStatus.isProduction) {
+      log("🚀 Modo producción detectado - Inicializando base de datos...");
+      const { initializeProductionDatabase } = await import("./production-init");
+      await initializeProductionDatabase();
+      log("✅ Base de datos de producción lista");
+    } else {
+      // Development mode - check if data exists
+      const { db } = await import("./db");
+      const { items } = await import("../shared/schema");
+      
+      const existingItems = await db.select().from(items).limit(1);
+      
+      if (existingItems.length === 0) {
+        log("🔄 Base de datos vacía - esperando importación manual desde panel admin");
+      } else {
+        const totalItems = await db.select().from(items);
+        log(`✅ Base de datos configurada con ${totalItems.length} productos`);
+      }
+    }
+  } catch (error) {
+    log(`❌ Error crítico en inicialización: ${error}`);
+    console.error("Stack trace completo:", error);
+    
+    // En producción, log el error pero intenta continuar con la aplicación básica
+    if (process.env.REPLIT_DEPLOYMENT === '1') {
+      log("⚠️ Error en inicialización de producción - continuando con aplicación básica");
+      log(`💾 Error details: ${JSON.stringify({
+        name: error.constructor.name,
+        message: error.message,
+        stack: error.stack?.split('\n').slice(0, 5).join('\n')
+      }, null, 2)}`);
+      // No hacer process.exit(1) inmediatamente, permitir que la app arranque
+    }
+  }
+
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    
+    // Detailed logging for deployment debugging
+    log(`💥 ERROR ${status} en ${req.method} ${req.path}`);
+    log(`📝 Message: ${message}`);
+    log(`🔍 Error type: ${err.constructor.name}`);
+    log(`📍 Stack: ${err.stack}`);
+    
+    // Log request details for 500 errors
+    if (status === 500) {
+      log(`📊 Request headers: ${JSON.stringify(req.headers, null, 2)}`);
+      log(`🌍 Environment: NODE_ENV=${process.env.NODE_ENV}, REPLIT_DEPLOYMENT=${process.env.REPLIT_DEPLOYMENT}`);
+      log(`📁 Working directory: ${process.cwd()}`);
+    }
+
+    // Only send response if it hasn't been sent already
+    if (!res.headersSent) {
+      // In production, provide detailed error info for debugging
+      const errorResponse = process.env.REPLIT_DEPLOYMENT === '1' 
+        ? { 
+            message, 
+            status, 
+            error: err.constructor.name,
+            path: req.path,
+            method: req.method,
+            timestamp: new Date().toISOString()
+          }
+        : { message };
+        
+      res.status(status).json(errorResponse);
+    }
+  });
+
+  // importantly only setup vite in development and after
+  // setting up all the other routes so the catch-all route
+  // doesn't interfere with the other routes
+  const isProduction = process.env.REPLIT_DEPLOYMENT === '1' || process.env.NODE_ENV === 'production';
+  
+  log(`🔍 Verificación de modo de ejecución:`);
+  log(`- REPLIT_DEPLOYMENT: ${process.env.REPLIT_DEPLOYMENT}`);
+  log(`- NODE_ENV: ${process.env.NODE_ENV}`);
+  log(`- isProduction resultado: ${isProduction}`);
+  
+  if (!isProduction) {
+    log("🔧 Modo desarrollo - usando Vite middleware");
+    await setupVite(app, server);
+  } else {
+    log("🚀 Modo producción - sirviendo archivos estáticos");
+    
+    // Middleware personalizado para servir archivos estáticos con logging
+    const path = await import("path");
+    const fs = await import("fs");
+    const express = await import("express");
+    
+    // En deployment, el working directory puede ser diferente
+    // Intentar múltiples rutas posibles
+    const possiblePaths = [
+      path.resolve(import.meta.dirname, "..", "dist", "public"),
+      path.resolve(process.cwd(), "dist", "public"),
+      path.resolve("/home/runner/workspace", "dist", "public"),
+      path.resolve(".", "dist", "public")
+    ];
+    
+    let distPath: string | null = null;
+    for (const possiblePath of possiblePaths) {
+      if (fs.existsSync(possiblePath)) {
+        distPath = possiblePath;
+        break;
+      }
+    }
+    
+    if (!distPath) {
+      const pathsChecked = possiblePaths.join(", ");
+      log(`❌ Error: No se encontró el directorio de build en ninguna de estas rutas: ${pathsChecked}`);
+      log(`📍 Working directory actual: ${process.cwd()}`);
+      log(`📍 import.meta.dirname: ${import.meta.dirname}`);
+      throw new Error(`Could not find the build directory, checked: ${pathsChecked}`);
+    }
+    
+    log(`📁 Archivos estáticos encontrados en: ${distPath}`);
+    app.use(express.static(distPath));
+    
+    // fall through to index.html if the file doesn't exist
+    app.use("*", (req, res) => {
+      // Solo servir HTML para rutas que no sean API
+      if (req.path.startsWith('/api/')) {
+        return res.status(404).json({ message: 'API endpoint not found' });
+      }
+      
+      const indexPath = path.resolve(distPath, "index.html");
+      log(`📄 Sirviendo index.html desde: ${indexPath} para ${req.path}`);
+      
+      // Verificar que el archivo existe antes de servirlo
+      if (!fs.existsSync(indexPath)) {
+        log(`❌ index.html no encontrado en: ${indexPath}`);
+        return res.status(500).json({ message: 'Static files not found' });
+      }
+      
+      res.sendFile(indexPath);
+    });
+  }
+
+  // ALWAYS serve the app on the port specified in the environment variable PORT
+  // Other ports are firewalled. Default to 5000 if not specified.
+  // this serves both the API and the client.
+  // It is the only port that is not firewalled.
+  const port = parseInt(process.env.PORT || '5000', 10);
+  
+  log(`🌍 Configuración de deployment:`);
+  log(`- Puerto: ${port}`);
+  log(`- Host: 0.0.0.0`);
+  log(`- Modo producción: ${isProduction}`);
+  log(`- NODE_ENV: ${process.env.NODE_ENV}`);
+  log(`- REPLIT_DEPLOYMENT: ${process.env.REPLIT_DEPLOYMENT}`);
+  
+  server.listen({
+    port,
+    host: "0.0.0.0",
+    reusePort: true,
+  }, () => {
+    log(`🚀 Servidor ejecutándose en puerto ${port}`);
+    log(`📱 URL de acceso: http://0.0.0.0:${port}`);
+  });
+})();
