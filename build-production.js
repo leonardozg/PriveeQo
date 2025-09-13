@@ -1,22 +1,24 @@
 #!/usr/bin/env node
 
-// Build script específico para DigitalOcean
-// Soluciona el problema ERR_MODULE_NOT_FOUND con vite
+// Build script ULTRA-SIMPLE para DigitalOcean
+// Solo frontend - backend se ejecuta con tsx
 
 import { execSync } from 'node:child_process';
+import { copyFileSync, mkdirSync } from 'fs';
 
-console.log('🔨 Iniciando build para DigitalOcean...');
+console.log('🔨 Build ultra-simple para DigitalOcean...');
 
 try {
-  // Step 1: Build frontend con Vite
+  // Solo build frontend
   console.log('📦 Building frontend...');
   execSync('npx vite build', { stdio: 'inherit' });
   
-  // Step 2: Build backend con esbuild (sin --packages=external)
-  console.log('🚀 Building backend...');
-  execSync('npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --external:drizzle-kit --external:@neondatabase/serverless', { stdio: 'inherit' });
+  // Copiar package.json para node_modules en runtime
+  console.log('📋 Copying package files...');
+  mkdirSync('dist', { recursive: true });
+  copyFileSync('package.json', 'dist/package.json');
   
-  console.log('✅ Build completado exitosamente para DigitalOcean');
+  console.log('✅ Build completado - server ejecutará con tsx');
 } catch (error) {
   console.error('❌ Error en build:', error.message);
   process.exit(1);
