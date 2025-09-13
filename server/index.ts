@@ -320,8 +320,8 @@ process.on('unhandledRejection', (reason, promise) => {
     }
     
     // REPLIT FIX 10: Port binding optimized for Replit deployment
-    // Use Replit's assigned PORT or fallback safely
-    const port = parseInt(process.env.PORT || (isProduction ? "3000" : "5000"), 10);
+    // Use assigned PORT or fallback to 8080 for DigitalOcean compatibility  
+    const port = parseInt(process.env.PORT || (isProduction ? "8080" : "5000"), 10);
     const host = "0.0.0.0"; // Critical for Replit
     
     // CRITICAL FIX: Add SPA fallback AFTER all routes are registered
@@ -430,7 +430,7 @@ process.on('unhandledRejection', (reason, promise) => {
       fallbackApp.get('*', (req, res) => {
         res.send('<h1>PRIVEE - Service Temporarily Unavailable</h1><p>Please try again in a few minutes.</p>');
       });
-      fallbackApp.listen(parseInt(process.env.PORT || "5000"), "0.0.0.0");
+      fallbackApp.listen(parseInt(process.env.PORT || "8080"), "0.0.0.0");
     } else {
       process.exit(1);
     }
