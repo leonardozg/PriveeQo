@@ -14,7 +14,19 @@ try {
   
   // Step 2: Build backend con TODAS las dependencies correctas
   console.log('🚀 Building backend...');
+  
+  // Node.js core modules - explicitly externalize
+  const nodeBuiltins = [
+    'node:fs', 'node:path', 'node:url', 'node:crypto', 'node:util', 'node:child_process',
+    'node:stream', 'node:events', 'node:os', 'node:buffer', 'node:process',
+    'fs', 'path', 'url', 'crypto', 'util', 'child_process',
+    'stream', 'events', 'os', 'buffer', 'process', 'http', 'https'
+  ];
+  
   const externals = [
+    // Node.js core modules
+    ...nodeBuiltins,
+    
     // Database y ORM
     '@neondatabase/serverless',
     'drizzle-orm',
@@ -44,7 +56,23 @@ try {
     '@babel/*'
   ].map(pkg => `--external:${pkg}`).join(' ');
   
-  execSync(`npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --tree-shaking=true --minify=false --keep-names=true ${externals}`, { stdio: 'inherit' });
+  // Enhanced esbuild configuration for Node.js compatibility
+  const esbuildCmd = `npx esbuild server/index.ts ` +
+    `--platform=node ` +
+    `--target=node20 ` +
+    `--bundle ` +
+    `--format=esm ` +
+    `--outdir=dist ` +
+    `--tree-shaking=true ` +
+    `--minify=false ` +
+    `--keep-names=true ` +
+    `--sourcemap=external ` +
+    `--main-fields=main,module ` +
+    `--conditions=node ` +
+    `${externals}`;
+    
+  console.log('📝 Building with enhanced Node.js polyfill support...');
+  execSync(esbuildCmd, { stdio: 'inherit' });
   
   console.log('✅ Build completo - servidor compilado para node');
 } catch (error) {
