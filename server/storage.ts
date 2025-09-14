@@ -4,7 +4,7 @@ import {
   type AdminUser, type InsertAdminUser, type Partner, type InsertPartner,
   users, items, quotes, quoteItems, adminUsers, partners
 } from "@shared/schema";
-import { db } from "./db";
+import { getDb } from "./db";
 import { eq, desc, sql, count } from "drizzle-orm";
 import { scrypt, randomBytes, timingSafeEqual, randomUUID } from "crypto";
 import { promisify } from "util";
@@ -68,12 +68,12 @@ export class DatabaseStorage implements IStorage {
 
   // Users
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+    const [user] = await (await getDb()).select().from(users).where(eq(users.id, id));
     return user;
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
-    const [user] = await db.insert(users).values({
+    const [user] = await (await getDb()).insert(users).values({
       ...userData,
       id: userData.id || randomUUID(),
     }).onConflictDoUpdate({
@@ -86,12 +86,12 @@ export class DatabaseStorage implements IStorage {
 
   // Admin Users
   async getAdminUser(id: string): Promise<AdminUser | undefined> {
-    const [adminUser] = await db.select().from(adminUsers).where(eq(adminUsers.id, id));
+    const [adminUser] = await (await getDb()).select().from(adminUsers).where(eq(adminUsers.id, id));
     return adminUser;
   }
 
   async getAdminUserByUsername(username: string): Promise<AdminUser | undefined> {
-    const [adminUser] = await db.select().from(adminUsers).where(eq(adminUsers.username, username));
+    const [adminUser] = await (await getDb()).select().from(adminUsers).where(eq(adminUsers.username, username));
     return adminUser;
   }
 
@@ -105,7 +105,7 @@ export class DatabaseStorage implements IStorage {
 
   async createAdminUser(insertAdminUser: InsertAdminUser): Promise<AdminUser> {
     const hashedPassword = await this.hashPassword(insertAdminUser.password);
-    const [adminUser] = await db.insert(adminUsers).values({
+    const [adminUser] = await (await getDb()).insert(adminUsers).values({
       ...insertAdminUser,
       password: hashedPassword,
     }).returning();
@@ -115,7 +115,7 @@ export class DatabaseStorage implements IStorage {
 
   async updateAdminPassword(username: string, newPassword: string): Promise<boolean> {
     const hashedPassword = await this.hashPassword(newPassword);
-    const result = await db.update(adminUsers)
+    const result = await (await getDb()).update(adminUsers)
       .set({ password: hashedPassword })
       .where(eq(adminUsers.username, username));
     return (result.rowCount ?? 0) > 0;
@@ -123,21 +123,21 @@ export class DatabaseStorage implements IStorage {
 
   // Partners
   async getPartners(): Promise<Partner[]> {
-    return db.select().from(partners);
+    return await (await getDb()).select().from(partners);
   }
 
   async getPartner(id: string): Promise<Partner | undefined> {
-    const [partner] = await db.select().from(partners).where(eq(partners.id, id));
+    const [partner] = await (await getDb()).select().from(partners).where(eq(partners.id, id));
     return partner;
   }
 
   async getPartnerByEmail(email: string): Promise<Partner | undefined> {
-    const [partner] = await db.select().from(partners).where(eq(partners.email, email));
+    const [partner] = await (await getDb()).select().from(partners).where(eq(partners.email, email));
     return partner;
   }
 
   async getPartnerByUsername(username: string): Promise<Partner | undefined> {
-    const [partner] = await db.select().from(partners).where(eq(partners.username, username));
+    const [partner] = await (await getDb()).select().from(partners).where(eq(partners.username, username));
     return partner;
   }
 
@@ -157,7 +157,7 @@ export class DatabaseStorage implements IStorage {
     if (!isCurrentValid) return false;
 
     const hashedPassword = await this.hashPassword(newPassword);
-    const result = await db.update(partners)
+    const result = await (await getDb()).update(partners)
       .set({ password: hashedPassword })
       .where(eq(partners.username, username));
 
@@ -166,7 +166,7 @@ export class DatabaseStorage implements IStorage {
 
   async createPartner(partner: InsertPartner): Promise<Partner> {
     const hashedPassword = await this.hashPassword(partner.password);
-    const [newPartner] = await db.insert(partners).values({
+    const [newPartner] = await (await getDb()).insert(partners).values({
       ...partner,
       password: hashedPassword,
     }).returning();
@@ -180,7 +180,7 @@ export class DatabaseStorage implements IStorage {
       updateData.password = await this.hashPassword(partner.password);
     }
 
-    const [updatedPartner] = await db.update(partners)
+    const [updatedPartner] = await (await getDb()).update(partners)
       .set(updateData)
       .where(eq(partners.id, id))
       .returning();
@@ -189,27 +189,27 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deletePartner(id: string): Promise<boolean> {
-    const result = await db.delete(partners).where(eq(partners.id, id));
+    const result = await (await getDb()).delete(partners).where(eq(partners.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 
   // Items
   async getItems(): Promise<Item[]> {
-    return db.select().from(items);
+    return await (await getDb()).select().from(items);
   }
 
   async getItem(id: string): Promise<Item | undefined> {
-    const [item] = await db.select().from(items).where(eq(items.id, id));
+    const [item] = await (await getDb()).select().from(items).where(eq(items.id, id));
     return item;
   }
 
   async createItem(item: InsertItem): Promise<Item> {
-    const [newItem] = await db.insert(items).values(item).returning();
+    const [newItem] = await (await getDb()).insert(items).values(item).returning();
     return newItem;
   }
 
   async updateItem(id: string, item: Partial<InsertItem>): Promise<Item | undefined> {
-    const [updatedItem] = await db.update(items)
+    const [updatedItem] = await (await getDb()).update(items)
       .set(item)
       .where(eq(items.id, id))
       .returning();
@@ -218,20 +218,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteItem(id: string): Promise<boolean> {
-    const result = await db.delete(items).where(eq(items.id, id));
+    const result = await (await getDb()).delete(items).where(eq(items.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 
   // Quotes
   async getQuotes(): Promise<Quote[]> {
-    return db.select().from(quotes).orderBy(desc(quotes.createdAt));
+    return await (await getDb()).select().from(quotes).orderBy(desc(quotes.createdAt));
   }
 
   async getQuote(id: string): Promise<QuoteWithItems | undefined> {
-    const [quote] = await db.select().from(quotes).where(eq(quotes.id, id));
+    const [quote] = await (await getDb()).select().from(quotes).where(eq(quotes.id, id));
     if (!quote) return undefined;
 
-    const quoteItemsList = await db.select({
+    const quoteItemsList = await (await getDb()).select({
       id: quoteItems.id,
       name: items.name,
       description: items.description,
@@ -285,7 +285,7 @@ export class DatabaseStorage implements IStorage {
     // Generate quote number
     const quoteNumber = this.generateQuoteCode(quote.partnerName, quote.clientName);
     
-    const [newQuote] = await db.insert(quotes).values({
+    const [newQuote] = await (await getDb()).insert(quotes).values({
       ...quote,
       quoteNumber
     }).returning();
@@ -295,7 +295,7 @@ export class DatabaseStorage implements IStorage {
       quoteId: newQuote.id
     }));
     
-    await db.insert(quoteItems).values(quoteItemsWithQuoteId);
+    await (await getDb()).insert(quoteItems).values(quoteItemsWithQuoteId);
     
     const createdQuote = await this.getQuote(newQuote.id);
     if (!createdQuote) throw new Error("Failed to create quote");
@@ -304,7 +304,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateQuote(id: string, quote: Partial<InsertQuote>): Promise<Quote | undefined> {
-    const [updatedQuote] = await db.update(quotes)
+    const [updatedQuote] = await (await getDb()).update(quotes)
       .set(quote)
       .where(eq(quotes.id, id))
       .returning();
@@ -313,8 +313,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteQuote(id: string): Promise<boolean> {
-    await db.delete(quoteItems).where(eq(quoteItems.quoteId, id));
-    const result = await db.delete(quotes).where(eq(quotes.id, id));
+    await (await getDb()).delete(quoteItems).where(eq(quoteItems.quoteId, id));
+    const result = await (await getDb()).delete(quotes).where(eq(quotes.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 
