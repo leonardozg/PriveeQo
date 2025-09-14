@@ -1,0 +1,63 @@
+# DigitalOcean App Platform Specification
+# PRIVEE Quote Management System
+name: privee-quote-system
+region: nyc
+
+# Database service - PostgreSQL
+databases:
+  - engine: PG
+    name: privee-db
+    num_nodes: 1
+    size: basic
+    version: "15"
+
+# Web service - Node.js application  
+services:
+  - name: privee-web
+    source_dir: /
+    github:
+      repo: your-username/your-repo-name  # UPDATE THIS
+      branch: main
+      deploy_on_push: true
+    
+    # Build configuration
+    build_command: node build-production.js
+    
+    # Runtime configuration
+    run_command: node dist/index.js
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    
+    # Environment variables
+    envs:
+      - key: NODE_ENV
+        value: production
+        
+      - key: PORT
+        value: "8080"
+        
+      - key: SESSION_SECRET
+        value: "YOUR_SESSION_SECRET_HERE"  # UPDATE THIS with a strong random secret
+        type: SECRET
+        
+      # Database connection - automatically set by DigitalOcean
+      - key: DATABASE_URL
+        value: "${privee-db.DATABASE_URL}"
+        
+    # Health check  
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 10
+      period_seconds: 10
+      timeout_seconds: 5
+      failure_threshold: 3
+      success_threshold: 2
+      
+    # HTTP configuration
+    http_port: 8080
+    
+    # Routes
+    routes:
+      - path: /
+        preserve_path_prefix: true
