@@ -36,13 +36,40 @@ import MemoryStore from "memorystore";
     registerRoutes(app);
 
     // Health endpoint
-    app.get("/api/health", (req, res) => {
-      res.json({
-        status: "ok",
-        timestamp: new Date().toISOString(),
-        environment: "production",
-        isProduction: true
-      });
+    app.get("/api/health", async (req, res) => {
+      try {
+        const health = {
+          status: "ok",
+          timestamp: new Date().toISOString(),
+          environment: "production",
+          isProduction: true,
+          databaseConnected: false,
+          itemsCount: 0
+        };
+
+        // Test database connection
+        try {
+          const { db } = await import("./db.js");
+          const { items } = await import("../shared/schema.js");
+          
+          const testItems = await db.select().from(items).limit(1);
+          health.databaseConnected = true;
+          const allItems = await db.select().from(items);
+          health.itemsCount = allItems.length;
+        } catch (dbError) {
+          console.error("Database health check failed:", dbError);
+          health.databaseConnected = false;
+        }
+
+        res.json(health);
+      } catch (error: any) {
+        console.error("Health check error:", error);
+        res.status(500).json({ 
+          status: "error", 
+          message: "Health check failed",
+          error: error?.message || "Unknown error"
+        });
+      }
     });
 
     // Static files - check multiple possible locations

@@ -60,7 +60,7 @@ try {
   ].map(pkg => `--external:${pkg}`).join(' ');
   
   // Enhanced esbuild configuration for Node.js compatibility
-  const esbuildCmd = `npx esbuild server/index-production.ts ` +
+  const esbuildCmd = `npx esbuild server/index.ts ` +
     `--platform=node ` +
     `--target=node22 ` +
     `--bundle ` +
