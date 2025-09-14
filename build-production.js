@@ -14,7 +14,7 @@ try {
   
   // Step 2: Build backend SIMPLIFICADO  
   console.log('🚀 Building backend...');
-  execSync('npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --external:@neondatabase/serverless --external:drizzle-kit --external:sharp --external:lightningcss --external:@babel/* --external:postcss --external:autoprefixer', { stdio: 'inherit' });
+  execSync('npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --external:@neondatabase/serverless --external:drizzle-kit --external:sharp --external:lightningcss --external:@babel/* --external:postcss --external:autoprefixer --external:@tailwindcss/* --external:vite --external:@vitejs/* --external:@types/* --external:typescript', { stdio: 'inherit' });
   
   console.log('✅ Build completo - servidor compilado para node');
 } catch (error) {
