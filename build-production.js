@@ -12,9 +12,39 @@ try {
   console.log('📦 Building frontend...');
   execSync('npx vite build', { stdio: 'inherit' });
   
-  // Step 2: Build backend SIMPLIFICADO  
+  // Step 2: Build backend con TODAS las dependencies correctas
   console.log('🚀 Building backend...');
-  execSync('npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --external:@neondatabase/serverless --external:drizzle-kit --external:sharp --external:lightningcss --external:@babel/* --external:postcss --external:autoprefixer --external:@tailwindcss/* --external:vite --external:@vitejs/* --external:@types/* --external:typescript', { stdio: 'inherit' });
+  const externals = [
+    // Database y ORM
+    '@neondatabase/serverless',
+    'drizzle-orm',
+    'ws',
+    
+    // Web framework y middleware  
+    'express',
+    'express-session',
+    'multer',
+    
+    // Authentication
+    'openid-client',
+    'passport',
+    'connect-pg-simple',
+    
+    // Utilities
+    'zod',
+    'csv-parse', 
+    'nanoid',
+    'memoizee',
+    
+    // Vite (solo en desarrollo)
+    'vite',
+    '@vitejs/*',
+    
+    // Babel (bundled dependencies)
+    '@babel/*'
+  ].map(pkg => `--external:${pkg}`).join(' ');
+  
+  execSync(`npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist ${externals}`, { stdio: 'inherit' });
   
   console.log('✅ Build completo - servidor compilado para node');
 } catch (error) {
