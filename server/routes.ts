@@ -9,6 +9,8 @@ import { db } from "./db";
 import multer from "multer";
 import { parse } from "csv-parse";
 import { Readable } from "stream";
+import { execSync } from "child_process";
+import * as path from "node:path";
 
 // Professional quote HTML generator (server-side version)
 function generateQuoteHTML(quote: QuoteWithItems): string {
@@ -1391,7 +1393,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Validate state transitions
-      const validTransitions = {
+      const validTransitions: Record<string, string[]> = {
         "draft": ["sent"],
         "sent": ["accepted", "rejected"],
         "accepted": ["executed"],
@@ -1400,7 +1402,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         "expired": [] // Terminal state
       };
       
-      const allowedNext = validTransitions[currentQuote.status as keyof typeof validTransitions] || [];
+      const allowedNext = validTransitions[currentQuote.status] || [];
       if (!allowedNext.includes(status)) {
         return res.status(400).json({ 
           message: "Invalid status transition", 
@@ -2254,7 +2256,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup endpoints for data seeding from admin panel
   app.post("/api/setup/seed-data", async (req, res) => {
     try {
-      const { execSync } = await import("child_process");
       execSync("node scripts/seed-data.js", { stdio: "inherit" });
       res.json({ message: "Datos cargados exitosamente" });
     } catch (error) {
@@ -2265,7 +2266,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/setup/seed-quotes", async (req, res) => {
     try {
-      const { execSync } = await import("child_process");
       execSync("node scripts/seed-quotes.js", { stdio: "inherit" });
       res.json({ message: "Cotizaciones cargadas exitosamente" });
     } catch (error) {
@@ -2276,7 +2276,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/setup/load-csv", async (req, res) => {
     try {
-      const { execSync } = await import("child_process");
       execSync("cd scripts && node csv-loader.js ../attached_assets/data_1754786989520.csv", { stdio: "inherit" });
       execSync("cd scripts && node seed-data.js", { stdio: "inherit" });
       res.json({ 
@@ -2329,7 +2328,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Cookie debug endpoints
   app.get("/debug-cookies", (_req, res) => {
-    const path = require('path');
     res.sendFile(path.resolve(process.cwd(), 'debug-cookies.html'));
   });
 
