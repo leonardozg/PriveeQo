@@ -45,6 +45,22 @@ services:
       - key: DATABASE_URL
         value: "${privee-db.DATABASE_URL}"
         
+      # Individual PostgreSQL environment variables for compatibility
+      - key: PGHOST
+        value: "${privee-db.HOSTNAME}"
+        
+      - key: PGUSER
+        value: "${privee-db.USERNAME}"
+        
+      - key: PGPASSWORD
+        value: "${privee-db.PASSWORD}"
+        
+      - key: PGDATABASE
+        value: "${privee-db.DATABASE}"
+        
+      - key: PGPORT
+        value: "${privee-db.PORT}"
+        
       # Replit authentication domains - Required for OIDC auth system
       - key: REPLIT_DOMAINS  
         value: "${APP_DOMAIN}"  # DigitalOcean will auto-populate with your app domain
