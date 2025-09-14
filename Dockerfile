@@ -1,7 +1,7 @@
 # Dockerfile para DigitalOcean App Platform
 # Soluciona problemas de buildpack con deterministic build
 
-FROM node:20-bookworm-slim AS builder
+FROM node:22-bookworm-slim AS builder
 WORKDIR /app
 
 # Copiar package files
@@ -17,7 +17,7 @@ COPY . .
 RUN node build-production.js
 
 # --- Runtime Stage ---
-FROM node:20-bookworm-slim AS runner
+FROM node:22-bookworm-slim AS runner
 WORKDIR /app
 
 # Configurar ambiente de producción
