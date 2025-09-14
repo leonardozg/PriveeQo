@@ -59,7 +59,7 @@ try {
   // Enhanced esbuild configuration for Node.js compatibility
   const esbuildCmd = `npx esbuild server/index.ts ` +
     `--platform=node ` +
-    `--target=node20 ` +
+    `--target=node22 ` +
     `--bundle ` +
     `--format=esm ` +
     `--outdir=dist ` +
