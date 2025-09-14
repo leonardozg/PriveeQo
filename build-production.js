@@ -15,12 +15,15 @@ try {
   // Step 2: Build backend con TODAS las dependencies correctas
   console.log('🚀 Building backend...');
   
-  // Node.js core modules - explicitly externalize
+  // Node.js core modules - explicitly externalize (comprehensive list)
   const nodeBuiltins = [
     'node:fs', 'node:path', 'node:url', 'node:crypto', 'node:util', 'node:child_process',
-    'node:stream', 'node:events', 'node:os', 'node:buffer', 'node:process',
+    'node:stream', 'node:events', 'node:os', 'node:buffer', 'node:process', 'node:http', 'node:https',
+    'node:net', 'node:tls', 'node:dns', 'node:timers', 'node:querystring', 'node:assert',
     'fs', 'path', 'url', 'crypto', 'util', 'child_process',
-    'stream', 'events', 'os', 'buffer', 'process', 'http', 'https'
+    'stream', 'events', 'os', 'buffer', 'process', 'http', 'https',
+    'net', 'tls', 'dns', 'timers', 'querystring', 'assert', 'cluster',
+    'dgram', 'readline', 'repl', 'string_decoder', 'tty', 'v8', 'vm', 'zlib'
   ];
   
   const externals = [
@@ -57,18 +60,20 @@ try {
   ].map(pkg => `--external:${pkg}`).join(' ');
   
   // Enhanced esbuild configuration for Node.js compatibility
-  const esbuildCmd = `npx esbuild server/index.ts ` +
+  const esbuildCmd = `npx esbuild server/index-production.ts ` +
     `--platform=node ` +
     `--target=node22 ` +
     `--bundle ` +
     `--format=esm ` +
-    `--outdir=dist ` +
+    `--outfile=dist/index.js ` +
     `--tree-shaking=true ` +
     `--minify=false ` +
     `--keep-names=true ` +
     `--sourcemap=external ` +
+    `--packages=external ` +
     `--main-fields=main,module ` +
     `--conditions=node ` +
+    `--banner:js="import{createRequire}from'module';const require=createRequire(import.meta.url);" ` +
     `${externals}`;
     
   console.log('📝 Building with enhanced Node.js polyfill support...');

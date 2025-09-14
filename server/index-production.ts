@@ -2,6 +2,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import path from "path";
 import fs from "fs";
+import session from "express-session";
+import MemoryStore from "memorystore";
 
 (async () => {
   const app = express();
@@ -13,12 +15,9 @@ import fs from "fs";
 
     // Session configuration with fallback
     try {
-      const session = await import("express-session");
-      const MemoryStore = await import("memorystore");
+      const memoryStore = MemoryStore(session);
       
-      const memoryStore = MemoryStore.default(session.default);
-      
-      app.use(session.default({
+      app.use(session({
         store: new memoryStore({ checkPeriod: 86400000 }),
         secret: process.env.SESSION_SECRET || "default-secret-key",
         resave: false,
