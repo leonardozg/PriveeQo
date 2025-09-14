@@ -44,7 +44,7 @@ try {
     '@babel/*'
   ].map(pkg => `--external:${pkg}`).join(' ');
   
-  execSync(`npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist ${externals}`, { stdio: 'inherit' });
+  execSync(`npx esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --tree-shaking=true --minify=false --keep-names=true ${externals}`, { stdio: 'inherit' });
   
   console.log('✅ Build completo - servidor compilado para node');
 } catch (error) {

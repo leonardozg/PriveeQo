@@ -2,6 +2,13 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { checkProductionEnvironment } from "./env-check";
+import { initializeProductionDatabase } from "./production-init";
+import { db } from "./db";
+import { items } from "../shared/schema";
+import * as path from "node:path";
+import * as fs from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const app = express();
 
@@ -152,7 +159,7 @@ process.on('unhandledRejection', (reason, promise) => {
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        const { checkProductionEnvironment } = await import("./env-check");
+        // Using static import
         const envStatus = checkProductionEnvironment();
         
         if (!envStatus.hasRequiredEnvs) {
@@ -167,15 +174,14 @@ process.on('unhandledRejection', (reason, promise) => {
         
         if (envStatus.isProduction) {
           log(`🚀 Modo producción detectado - Inicializando base de datos (intento ${attempt})...`);
-          const { initializeProductionDatabase } = await import("./production-init");
+          // Using static import
           await initializeProductionDatabase();
           log("✅ Base de datos de producción lista");
           dbInitialized = true;
           break;
         } else {
           // Development mode
-          const { db } = await import("./db");
-          const { items } = await import("../shared/schema");
+          // Using static imports
           
           const existingItems = await db.select().from(items).limit(1);
           
@@ -255,13 +261,12 @@ process.on('unhandledRejection', (reason, promise) => {
       
       // REPLIT FIX 9: Static file serving with fallback paths
       try {
-        const path = await import("path");
-        const fs = await import("fs");
-        const express = await import("express");
+        // Using static imports
         
-        // Multiple possible paths for Replit deployment
+        // Multiple possible paths for deployment using static imports
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
         const possiblePaths = [
-          path.resolve(import.meta.dirname, "..", "dist", "public"),
+          path.resolve(__dirname, "..", "dist", "public"),
           path.resolve(process.cwd(), "dist", "public"),
           path.resolve("/home/runner/workspace", "dist", "public"),
           path.resolve(".", "dist", "public"),
@@ -326,10 +331,9 @@ process.on('unhandledRejection', (reason, promise) => {
     
     // CRITICAL FIX: Add SPA fallback AFTER all routes are registered
     if (isProduction) {
-      const path = await import("path");
-      const fs = await import("fs");
-      // Use the same path resolution logic as static file serving
-      const distPath = path.resolve("/home/runner/workspace", "dist", "public");
+      // Using static imports and proper dirname calculation
+      const __dirname = path.dirname(fileURLToPath(import.meta.url));
+      const distPath = path.resolve(__dirname, "..", "dist", "public");
       const indexPath = path.resolve(distPath, "index.html");
       
       app.use("*", (req, res) => {
