@@ -199,9 +199,9 @@ process.on('unhandledRejection', (reason, promise) => {
         log(`❌ Error en inicialización intento ${attempt}: ${(error as Error).message}`);
         
         if (attempt === maxRetries) {
-          if (process.env.REPLIT_DEPLOYMENT === '1') {
+          if (process.env.NODE_ENV === 'production') {
             log("⚠️ Error en inicialización de producción - continuando con aplicación básica");
-            dbInitialized = false; // Continue without DB
+            dbInitialized = false; // Continue without DB in any production environment
             break;
           } else {
             throw error;
