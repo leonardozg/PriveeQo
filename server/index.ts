@@ -287,19 +287,21 @@ process.on('unhandledRejection', (reason, promise) => {
           const error = new Error(`Static files not found. Checked: ${possiblePaths.join(', ')}`);
           logError(error, null, { phase: 'static files setup', possiblePaths });
           
-          // Fallback: serve from minimal index
+          // CRITICAL: No fallback HTML - fail fast if static files missing
           app.use("*", (req, res) => {
             if (req.path.startsWith("/api/")) {
               return res.status(404).json({ message: "API endpoint not found" });
             }
-            res.status(200).send(`
-              <!DOCTYPE html>
-              <html><head><title>PRIVEE</title></head>
-              <body><h1>PRIVEE Sistema de Cotizaciones</h1>
-              <p>Static files not found. Please redeploy.</p>
-              <p><a href="/api/health">Health Check</a> | <a href="/api/error-log">Error Log</a></p>
-              </body></html>
-            `);
+            // Return JSON error for all routes - forces proper build before deployment
+            res.status(503).json({
+              error: "Application Not Ready",
+              message: "Static files not found - build required",
+              details: {
+                checkedPaths: possiblePaths,
+                instruction: "Run 'npm run build' or 'node build-production.js' before deployment",
+                healthCheck: "/api/health"
+              }
+            });
           });
         } else {
           // CRITICAL FIX: Static files with explicit API exclusion
