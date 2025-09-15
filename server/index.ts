@@ -10,6 +10,15 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
+// CRITICAL: Ensure Node.js version compatibility for ESM imports
+const nodeVersion = process.version;
+const majorVersion = parseInt(nodeVersion.slice(1).split('.')[0]);
+if (majorVersion < 18) {
+  console.error(`❌ PRIVEE requires Node.js ≥18 for ESM support. Current: ${nodeVersion}`);
+  console.error(`   Update Node.js: https://nodejs.org/`);
+  process.exit(1);
+}
+
 const app = express();
 
 // REPLIT FIX 1: Enhanced error tracking for deployment
