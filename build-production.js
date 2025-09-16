@@ -60,6 +60,7 @@ try {
   ].map(pkg => `--external:${pkg}`).join(' ');
   
   // Enhanced esbuild configuration for Node.js compatibility
+  // CRITICAL: Do NOT define process.env to preserve runtime environment variables
   const esbuildCmd = `npx esbuild server/index.ts ` +
     `--platform=node ` +
     `--target=node22 ` +
@@ -74,6 +75,7 @@ try {
     `--main-fields=main,module ` +
     `--conditions=node ` +
     `--banner:js="import{createRequire}from'module';const require=createRequire(import.meta.url);" ` +
+    `--define:process.env.NODE_ENV='"production"' ` +
     `${externals}`;
     
   console.log('📝 Building with enhanced Node.js polyfill support...');
