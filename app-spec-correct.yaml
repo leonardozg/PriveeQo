@@ -17,7 +17,7 @@ databases:
 services:
   - name: privee-web
     github:
-      repo: your-username/your-repo-name
+      repo: leonardozg/priveeqo
       branch: main
       deploy_on_push: true
     
