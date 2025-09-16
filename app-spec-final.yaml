@@ -1,12 +1,6 @@
 name: privee-quote-system
 region: nyc
 
-envs:
-  - key: NODE_ENV
-    value: production
-    scope: RUN_TIME
-    type: GENERAL
-
 databases:
   - engine: PG
     name: privee-db
@@ -29,7 +23,19 @@ services:
     http_port: 8080
     
     envs:
-      # FIXED: DATABASE_URL must be SECRET and RUN_AND_BUILD_TIME scope
+      # CRITICAL: NODE_ENV must be at service level for Digital Ocean
+      - key: NODE_ENV
+        value: production
+        scope: RUN_TIME
+        type: GENERAL
+      
+      # CRITICAL: PORT must match http_port for health checks
+      - key: PORT
+        value: "8080"
+        scope: RUN_TIME
+        type: GENERAL
+      
+      # DATABASE_URL for database connection
       - key: DATABASE_URL
         value: ${privee-db.DATABASE_URL}
         scope: RUN_AND_BUILD_TIME
