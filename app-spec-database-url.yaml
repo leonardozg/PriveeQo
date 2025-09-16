@@ -29,29 +29,9 @@ services:
     http_port: 8080
     
     envs:
-      # Individual PostgreSQL variables - your app will detect and use these automatically
-      - key: PGHOST
-        value: ${privee-db.HOSTNAME}
-        scope: RUN_TIME
-        type: GENERAL
-      
-      - key: PGUSER
-        value: ${privee-db.USERNAME}
-        scope: RUN_TIME
-        type: GENERAL
-      
-      - key: PGPASSWORD
-        value: ${privee-db.PASSWORD}
-        scope: RUN_TIME
-        type: SECRET
-      
-      - key: PGDATABASE
-        value: ${privee-db.DATABASE}
-        scope: RUN_TIME
-        type: GENERAL
-      
-      - key: PGPORT
-        value: ${privee-db.PORT}
+      # DATABASE_URL option - your app will detect and use this automatically
+      - key: DATABASE_URL
+        value: ${privee-db.DATABASE_URL}
         scope: RUN_TIME
         type: GENERAL
     
