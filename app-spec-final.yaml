@@ -1,13 +1,6 @@
 name: privee-quote-system
 region: nyc
 
-databases:
-  - engine: PG
-    name: privee-db
-    num_nodes: 1
-    size: db-s-1vcpu-1gb
-    version: "15"
-
 services:
   - name: privee-web
     github:
@@ -35,9 +28,9 @@ services:
         scope: RUN_TIME
         type: GENERAL
       
-      # DATABASE_URL for database connection
+      # REPLIT DATABASE: Using working Replit database (with 87 products, admin users, etc.)
       - key: DATABASE_URL
-        value: ${privee-db.DATABASE_URL}
+        value: postgresql://neondb_owner:npg_JaEPCnHO6m9B@ep-twilight-mouse-ae5xq91x.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require
         scope: RUN_AND_BUILD_TIME
         type: SECRET
     
