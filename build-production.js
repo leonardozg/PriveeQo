@@ -1,67 +1,82 @@
 #!/usr/bin/env node
 
-// Build script FINAL para DigitalOcean
-// Frontend + Backend compilado - sin dependencias dev en runtime
+// Production build script for Digital Ocean App Platform
+// Builds React frontend + Express backend optimized for Digital Ocean deployment
 
 import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
-console.log('🔨 Build completo para DigitalOcean...');
+console.log('🔨 Building PRIVEE for Digital Ocean App Platform...');
 
 try {
-  // Step 1: Build frontend
-  console.log('📦 Building frontend...');
+  // Cleanup previous builds
+  console.log('🧹 Cleaning previous builds...');
+  if (fs.existsSync('dist')) {
+    execSync('rm -rf dist', { stdio: 'inherit' });
+  }
+
+  // Step 1: Build React frontend with Vite
+  console.log('📦 Building React frontend...');
   execSync('npx vite build', { stdio: 'inherit' });
   
-  // Step 2: Build backend con TODAS las dependencies correctas
-  console.log('🚀 Building backend...');
+  // Verify frontend build
+  const frontendPath = 'dist/public';
+  if (!fs.existsSync(frontendPath)) {
+    throw new Error('Frontend build failed - dist/public not found');
+  }
+  console.log('✅ Frontend built successfully');
   
-  // Node.js core modules - explicitly externalize (comprehensive list)
-  const nodeBuiltins = [
-    'node:fs', 'node:path', 'node:url', 'node:crypto', 'node:util', 'node:child_process',
-    'node:stream', 'node:events', 'node:os', 'node:buffer', 'node:process', 'node:http', 'node:https',
-    'node:net', 'node:tls', 'node:dns', 'node:timers', 'node:querystring', 'node:assert',
-    'fs', 'path', 'url', 'crypto', 'util', 'child_process',
-    'stream', 'events', 'os', 'buffer', 'process', 'http', 'https',
-    'net', 'tls', 'dns', 'timers', 'querystring', 'assert', 'cluster',
-    'dgram', 'readline', 'repl', 'string_decoder', 'tty', 'v8', 'vm', 'zlib'
-  ];
+  // Step 2: Build Express backend for production
+  console.log('🚀 Building Express backend...');
   
+  // External packages that should NOT be bundled (available via package.json)
   const externals = [
-    // Node.js core modules
-    ...nodeBuiltins,
+    // Node.js built-ins
+    'fs', 'path', 'url', 'crypto', 'util', 'child_process', 'stream', 'events', 
+    'os', 'buffer', 'process', 'http', 'https', 'net', 'tls', 'dns', 'timers',
+    'node:fs', 'node:path', 'node:url', 'node:crypto', 'node:util', 'node:child_process',
+    'node:stream', 'node:events', 'node:os', 'node:buffer', 'node:process',
     
-    // Database y ORM
+    // Database & ORM
     '@neondatabase/serverless',
     'drizzle-orm',
-    'ws',
+    'drizzle-kit',
+    'pg',
     
-    // Web framework y middleware  
+    // Express & middleware
     'express',
     'express-session',
+    'connect-pg-simple',
     'multer',
+    'passport',
+    'passport-local',
     
     // Authentication
     'openid-client',
-    'passport',
-    'connect-pg-simple',
+    'google-auth-library',
     
-    // Utilities
+    // Utilities (keep external for runtime flexibility)
     'zod',
-    'csv-parse', 
+    'zod-validation-error',
+    'csv-parse',
     'nanoid',
     'memoizee',
+    'memorystore',
+    'ws',
+    'jspdf',
     
-    // Vite (solo en desarrollo)
+    // Babel (can be bundled or external)
+    '@babel/parser',
+    '@babel/traverse',
+    
+    // Development only (should not be in production)
     'vite',
-    '@vitejs/*',
-    
-    // Babel (bundled dependencies)
-    '@babel/*'
+    '@vitejs/plugin-react',
+    'tsx'
   ].map(pkg => `--external:${pkg}`).join(' ');
   
-  // Enhanced esbuild configuration for Node.js compatibility
-  // CRITICAL: Do NOT define process.env to preserve runtime environment variables
-  const esbuildCmd = `npx esbuild server/index.ts ` +
+  const esbuildCmd = `npx esbuild server/index-production.ts ` +
     `--platform=node ` +
     `--target=node22 ` +
     `--bundle ` +
@@ -75,14 +90,81 @@ try {
     `--main-fields=main,module ` +
     `--conditions=node ` +
     `--banner:js="import{createRequire}from'module';const require=createRequire(import.meta.url);" ` +
-    `--define:process.env.NODE_ENV='"production"' ` +
     `${externals}`;
     
-  console.log('📝 Building with enhanced Node.js polyfill support...');
+  console.log('📝 Running esbuild for backend...');
   execSync(esbuildCmd, { stdio: 'inherit' });
   
-  console.log('✅ Build completo - servidor compilado para node');
+  // Verify backend build
+  if (!fs.existsSync('dist/index.js')) {
+    throw new Error('Backend build failed - dist/index.js not found');
+  }
+  console.log('✅ Backend built successfully');
+
+  // Step 3: Create package.json for production
+  console.log('📦 Creating production package.json...');
+  
+  const originalPackageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+  
+  // Production-only dependencies (remove dev dependencies)
+  const productionDeps = {
+    "@neondatabase/serverless": originalPackageJson.dependencies["@neondatabase/serverless"],
+    "@babel/parser": originalPackageJson.dependencies["@babel/parser"],
+    "@babel/traverse": originalPackageJson.dependencies["@babel/traverse"],
+    "express": originalPackageJson.dependencies["express"],
+    "express-session": originalPackageJson.dependencies["express-session"],
+    "connect-pg-simple": originalPackageJson.dependencies["connect-pg-simple"],
+    "drizzle-orm": originalPackageJson.dependencies["drizzle-orm"],
+    "multer": originalPackageJson.dependencies["multer"],
+    "passport": originalPackageJson.dependencies["passport"],
+    "passport-local": originalPackageJson.dependencies["passport-local"],
+    "openid-client": originalPackageJson.dependencies["openid-client"],
+    "google-auth-library": originalPackageJson.dependencies["google-auth-library"],
+    "zod": originalPackageJson.dependencies["zod"],
+    "zod-validation-error": originalPackageJson.dependencies["zod-validation-error"],
+    "csv-parse": originalPackageJson.dependencies["csv-parse"],
+    "nanoid": originalPackageJson.dependencies["nanoid"],
+    "memoizee": originalPackageJson.dependencies["memoizee"],
+    "memorystore": originalPackageJson.dependencies["memorystore"],
+    "ws": originalPackageJson.dependencies["ws"],
+    "jspdf": originalPackageJson.dependencies["jspdf"],
+    "pg": originalPackageJson.dependencies["pg"]
+  };
+
+  const productionPackageJson = {
+    name: originalPackageJson.name,
+    version: originalPackageJson.version,
+    type: "module",
+    engines: {
+      node: ">=22.0.0"
+    },
+    scripts: {
+      start: "node index.js"
+    },
+    dependencies: productionDeps
+  };
+
+  fs.writeFileSync('dist/package.json', JSON.stringify(productionPackageJson, null, 2));
+  console.log('✅ Production package.json created');
+
+  // Step 4: Copy any additional required files
+  console.log('📋 Copying additional files...');
+  
+  // Copy logo to public directory if exists
+  if (fs.existsSync('client/public/logo.jpg')) {
+    execSync('cp client/public/logo.jpg dist/public/', { stdio: 'inherit' });
+    console.log('📸 Logo copied to build');
+  }
+
+  console.log('🎉 Build completed successfully!');
+  console.log('📁 Files ready for deployment:');
+  console.log('   - dist/index.js (backend server)');
+  console.log('   - dist/package.json (production dependencies)');
+  console.log('   - dist/public/ (frontend static files)');
+  console.log('');
+  console.log('🚀 Ready for Digital Ocean deployment!');
+  
 } catch (error) {
-  console.error('❌ Error en build:', error.message);
+  console.error('❌ Build failed:', error.message);
   process.exit(1);
 }
