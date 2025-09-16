@@ -162,11 +162,11 @@ async function initializeDatabase() {
   console.log('');
   
   const client = new Client({
-    host: 'privee-database-do-user-25633030-0.e.db.ondigitalocean.com',
-    port: 25060,
-    user: 'doadmin',
-    password: 'AVNS_ojPNZdmunRm9PcP54vv',
-    database: 'defaultdb',
+    host: process.env.DB_HOST || 'privee-database-do-user-25633030-0.e.db.ondigitalocean.com',
+    port: process.env.DB_PORT || 25060,
+    user: process.env.DB_USER || 'doadmin',
+    password: process.env.DB_PASSWORD || 'YOUR_DATABASE_PASSWORD_HERE',
+    database: process.env.DB_NAME || 'defaultdb',
     ssl: {
       rejectUnauthorized: false,
       ca: false,
