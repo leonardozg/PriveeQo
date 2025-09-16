@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { insertItemSchema, insertQuoteSchema, insertQuoteItemSchema, insertAdminUserSchema, insertPartnerSchema, partnerLoginSchema, partnerPasswordChangeSchema, type QuoteWithItems, quoteItems, quotes, items, partners, adminUsers } from "@shared/schema";
 import { z } from "zod";
 import session from "express-session";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./auth";
 import { db } from "./db";
 import multer from "multer";
 import { parse } from "csv-parse";
@@ -876,7 +876,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     },
   }));
 
-  // Auth middleware for Replit Auth (still needed for some legacy routes)
+  // Setup platform-agnostic authentication middleware
   await setupAuth(app);
 
   // Partner Authentication Routes
@@ -948,7 +948,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Legacy Replit Auth routes (kept for backwards compatibility)
+  // Legacy authentication routes (kept for backwards compatibility)
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
