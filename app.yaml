@@ -3,6 +3,13 @@
 name: privee-quote-system
 region: nyc
 
+# Global environment variables
+envs:
+  - key: NODE_ENV
+    value: production
+    scope: RUN_TIME
+    type: GENERAL
+
 # Database service - PostgreSQL
 databases:
   - engine: PG
@@ -29,33 +36,40 @@ services:
     instance_count: 1
     instance_size_slug: basic-xxs
     
-    # Environment variables
-  envs:
-       # Production environment setting
-       - key: NODE_ENV
-         value: production
-         scope: RUN_TIME
-         type: GENERAL
-
-     services:
-       - name: web
-         envs:
-           # Database connection string
-           - key: DATABASE_URL
-             value: ${db.DATABASE_URL}  # Bindable variable from DigitalOcean managed database
-             scope: RUN_TIME
-             type: GENERAL
-
-           # Alternative: If using external PostgreSQL provider
-           # - key: DATABASE_URL
-           #   value: postgresql://username:password@host:port/database
-           #   scope: RUN_TIME
-           #   type: SECRET
-
-     databases:
-       - name: db
-         engine: PG
-         version: "15"  # PostgreSQL version
+    # Database environment variables
+    envs:
+      # Option 1: Using DATABASE_URL (recommended)
+      - key: DATABASE_URL
+        value: ${privee-db.DATABASE_URL}
+        scope: RUN_TIME
+        type: GENERAL
+      
+      # Option 2: Individual PostgreSQL variables (alternative to DATABASE_URL)
+      # Uncomment these if you prefer individual variables instead of DATABASE_URL
+      # - key: PGHOST
+      #   value: ${privee-db.HOSTNAME}
+      #   scope: RUN_TIME
+      #   type: GENERAL
+      # 
+      # - key: PGUSER
+      #   value: ${privee-db.USERNAME}
+      #   scope: RUN_TIME
+      #   type: GENERAL
+      # 
+      # - key: PGPASSWORD
+      #   value: ${privee-db.PASSWORD}
+      #   scope: RUN_TIME
+      #   type: SECRET
+      # 
+      # - key: PGDATABASE
+      #   value: ${privee-db.DATABASE}
+      #   scope: RUN_TIME
+      #   type: GENERAL
+      # 
+      # - key: PGPORT
+      #   value: ${privee-db.PORT}
+      #   scope: RUN_TIME
+      #   type: GENERAL
         
     # Health check  
     health_check:
@@ -67,7 +81,7 @@ services:
       success_threshold: 2
       
     # HTTP configuration
-    http_port: 8080
+    http_port: 5000
     
     # Routes
     routes:
