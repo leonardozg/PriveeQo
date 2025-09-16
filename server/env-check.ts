@@ -1,5 +1,6 @@
 export function checkProductionEnvironment() {
-  const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+  // FIXED: Support both NODE_ENV=production and REPLIT_DEPLOYMENT for platform compatibility
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.REPLIT_DEPLOYMENT === '1';
   
   console.log('Environment Check:');
   console.log('- REPLIT_DEPLOYMENT:', process.env.REPLIT_DEPLOYMENT);
@@ -7,9 +8,15 @@ export function checkProductionEnvironment() {
   console.log('- DATABASE_URL present:', !!process.env.DATABASE_URL);
   console.log('- Production mode:', isProduction);
   
-  // Verificar variables críticas
-  const criticalEnvs = ['DATABASE_URL', 'PGHOST', 'PGUSER', 'PGPASSWORD', 'PGDATABASE'];
-  const missing = criticalEnvs.filter(env => !process.env[env]);
+  // FIXED: Accept either DATABASE_URL OR individual PG variables (Digital Ocean vs Replit)
+  const hasDatabaseUrl = !!process.env.DATABASE_URL;
+  const hasIndividualPgVars = !!(process.env.PGHOST && process.env.PGUSER && process.env.PGPASSWORD && process.env.PGDATABASE);
+  const hasDatabaseConfig = hasDatabaseUrl || hasIndividualPgVars;
+  
+  const missing = [];
+  if (!hasDatabaseConfig) {
+    missing.push('DATABASE_URL or (PGHOST + PGUSER + PGPASSWORD + PGDATABASE)');
+  }
   
   // Verificar variable de sesión
   if (!process.env.SESSION_SECRET) {
