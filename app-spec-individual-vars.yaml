@@ -1,0 +1,67 @@
+name: privee-quote-system
+region: nyc
+
+envs:
+  - key: NODE_ENV
+    value: production
+    scope: RUN_TIME
+    type: GENERAL
+
+databases:
+  - engine: PG
+    name: privee-db
+    num_nodes: 1
+    size: basic
+    version: "15"
+
+services:
+  - name: privee-web
+    github:
+      repo: your-username/your-repo-name
+      branch: main
+      deploy_on_push: true
+    
+    build_command: node build-production.js
+    run_command: node dist/index.js
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 5000
+    
+    envs:
+      - key: PGHOST
+        value: ${privee-db.HOSTNAME}
+        scope: RUN_TIME
+        type: GENERAL
+      
+      - key: PGUSER
+        value: ${privee-db.USERNAME}
+        scope: RUN_TIME
+        type: GENERAL
+      
+      - key: PGPASSWORD
+        value: ${privee-db.PASSWORD}
+        scope: RUN_TIME
+        type: SECRET
+      
+      - key: PGDATABASE
+        value: ${privee-db.DATABASE}
+        scope: RUN_TIME
+        type: GENERAL
+      
+      - key: PGPORT
+        value: ${privee-db.PORT}
+        scope: RUN_TIME
+        type: GENERAL
+    
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 10
+      period_seconds: 10
+      timeout_seconds: 5
+      failure_threshold: 3
+      success_threshold: 2
+    
+    routes:
+      - path: /
+        preserve_path_prefix: true
