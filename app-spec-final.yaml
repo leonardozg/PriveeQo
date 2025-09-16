@@ -28,7 +28,13 @@ services:
         scope: RUN_TIME
         type: GENERAL
       
-      # REPLIT DATABASE: Using working Replit database (with 87 products, admin users, etc.)
+      # SESSION SECRET: Required for express-session security
+      - key: SESSION_SECRET
+        value: "PRIVEE_2025_SECURE_SESSION_KEY_FOR_PRODUCTION_DEPLOYMENT"
+        scope: RUN_TIME
+        type: SECRET
+      
+      # DATABASE: Using working Neon database (platform-agnostic connection)
       - key: DATABASE_URL
         value: postgresql://neondb_owner:npg_JaEPCnHO6m9B@ep-twilight-mouse-ae5xq91x.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require
         scope: RUN_AND_BUILD_TIME
