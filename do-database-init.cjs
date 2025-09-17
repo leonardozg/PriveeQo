@@ -190,7 +190,29 @@ async function initializeDatabase() {
     console.log(`   • PostgreSQL: ${dbInfo.rows[0].version.split(' ').slice(0, 2).join(' ')}`);
     console.log('');
 
-    // 1. Create admin user
+    // 1. Create sessions table (CRITICAL for login persistence)
+    console.log('🗄️ Creating sessions table...');
+    try {
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS sessions (
+          sid varchar PRIMARY KEY,
+          sess json NOT NULL,
+          expire timestamp(6) NOT NULL
+        )
+      `);
+      await client.query(`
+        CREATE INDEX IF NOT EXISTS sessions_expire_idx ON sessions(expire)
+      `);
+      console.log('✅ Sessions table created successfully');
+      console.log('   • Required for express-session persistence');
+      console.log('   • Without this table, logins will fail in production');
+    } catch (error) {
+      console.log('❌ Error creating sessions table:', error.message);
+      throw error;
+    }
+    console.log('');
+
+    // 2. Create admin user
     console.log('👤 Creating admin user...');
     try {
       const adminPassword = await hashPassword(ADMIN_PASSWORD);
@@ -297,6 +319,8 @@ async function initializeDatabase() {
       SELECT 'admin_users' as table_name, COUNT(*) as count FROM admin_users
       UNION ALL  
       SELECT 'partners' as table_name, COUNT(*) as count FROM partners
+      UNION ALL
+      SELECT 'sessions' as table_name, COUNT(*) as count FROM sessions
       ORDER BY table_name
     `);
     
